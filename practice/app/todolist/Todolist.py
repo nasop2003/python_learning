@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from datetime import datetime
 
-def list_add(file_path: str = r"C:\Users\ahsom\Desktop\プログラミング学習\Python\初心者\Todoリスト\TodoList.json" ) :
+def list_add(file_path: str = r"C:\Users\ahsom\Desktop\プログラミング学習\Python\初心者\todolist\todolist.json" ) :
     """Todoリスト追加（文字のみ、数字と記号は入力不可）"""
 
     path = Path(file_path)

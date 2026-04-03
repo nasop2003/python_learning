@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 
-FILE_PATH = r"C:\Users\ahsom\Desktop\プログラミング学習\Python\初心者\WeatherMemo\weathermemo.json"
+FILE_PATH = r"C:\Users\ahsom\Desktop\プログラミング学習\Python\初心者\weather_memo\weather_memo.json"
 
 def load_json() -> list[dict]:
     """jsonファイル読み込み"""
