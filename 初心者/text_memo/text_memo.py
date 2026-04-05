@@ -4,7 +4,7 @@ from tkinter import messagebox
 from datetime import datetime
 from pathlib import Path
 
-FILE_PATH = r"C:\Users\ahsom\Desktop\プログラミング学習\Python\初心者\textmemo\textmemo.json"
+FILE_PATH = r"C:\Users\ahsom\Desktop\プログラミング学習\Python\初心者\text_memo\text_memo.json"
 
 def load_json():
     """jsonファイル読み込み（無ければ作成）"""
