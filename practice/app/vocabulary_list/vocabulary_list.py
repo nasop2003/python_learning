@@ -1,6 +1,7 @@
 import json
 import random
 from pathlib import Path
+from datetime import datetime
 import re
 
 FILE_PATH = r"C:\Users\ahsom\Desktop\プログラミング学習\Python\practice\app\vocabulary_list\vocabulary_list.json"
@@ -58,6 +59,7 @@ def vocabulary_register(vocabulary: list[dict]) -> None:
     #日本語訳を登録（数字・記号・英語は入力不可）
     while True:
         japanese_vocabulary = input("日本語訳を入力: ").strip()
+        
         if japanese_vocabulary == "":
             print("文字を入力してください")
             continue
@@ -70,19 +72,21 @@ def vocabulary_register(vocabulary: list[dict]) -> None:
         elif japanese_vocabulary.isalpha() and japanese_vocabulary.isascii():
             print("英語は入力できません")
             continue
-        
-        if vocabulary:
-            vocabulary[0][english_vocabulary] = japanese_vocabulary #既存のdictに追加
         else:
-            vocabulary.append({english_vocabulary: japanese_vocabulary}) #初回のみ新規作成
-        
+            #英単語・日本語訳すべてクリアしたときの処理
+            vocabulary.append({"英単語": english_vocabulary, "訳": japanese_vocabulary}) 
+            
         json_save(vocabulary)
         print(f"登録しました。英単語: {english_vocabulary} ・ 日本語訳: {japanese_vocabulary}")
-        return
+        break
 
-def vocabulary_list():
+def vocabulary_list(vocabulary: list[dict]):
     """単語一覧表示"""
-
+    print("英単語一覧")
+    
+    for v in vocabulary:
+        print(f" {v['英単語']} / {v['訳']}")
+        
 def test_questions():
     """テスト問題出題（１問）"""
     
@@ -97,15 +101,15 @@ def main() -> None:
     print("=" * 6)
     print("単語帳")
     print("=" * 6)
-        
-    print("1) 単語登録")
-    print("2) 単語一覧表示")
-    print("3) テスト")
-    print("4) 集計・結果表示")
-    print("5) 終了")
     
     while True:
         vocabulary = json_load()
+        
+        print("1) 単語登録")
+        print("2) 単語一覧表示")
+        print("3) テスト")
+        print("4) 集計・結果表示")
+        print("5) 終了")
         
         choice = input("メイン画面・選択: ")
         
