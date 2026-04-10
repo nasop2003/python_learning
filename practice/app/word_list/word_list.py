@@ -35,7 +35,7 @@ def is_japanese(text: str) -> bool:
     pattern = re.compile(r'[\u3041-\u3096\u30A0-\u30FF\u4E00-\u9FFF]')
     return bool(pattern.search(text))
 
-def word_register(word: dict[list]) -> None:
+def word_register(data: dict[list]) -> None:
     """単語登録"""
     
     #英単語を登録（数字・記号・日本語は入力不可）
@@ -55,7 +55,12 @@ def word_register(word: dict[list]) -> None:
         elif is_japanese(english_word):
             print("日本語は入力できません")
         else:
-            break
+            #duplicate_check()で同じ単語が登録されていないかチェック
+            if duplicate_check(english_word, data):
+                continue
+            else:
+                break
+            
     
     #日本語訳を登録（数字・記号・英語は入力不可）
     while True:
@@ -76,18 +81,27 @@ def word_register(word: dict[list]) -> None:
         else:
             #英単語・日本語訳すべてクリアしたときの処理
             new_word = {"英単語": english_word, "訳": japanese_word}
-            word["単語"].append(new_word)
+            data["単語"].append(new_word)
+            json_save(data)
+            print(f"登録しました。 英単語: {english_word} 日本語訳: {japanese_word}")
+            return
             
-        json_save(word)
-        print(f"登録しました。英単語: {english_word} ・ 日本語訳: {japanese_word}")
-        break
-
-def word_list(data: dict[list]):
+            
+def duplicate_check(english_word: str, data: dict[list]) -> bool:
+    """同じ単語が登録されているかチェック"""
+    for d in data["単語"]:
+        if english_word == d["英単語"]:
+            print("すでに同じ単語が登録されています")
+            return True
+    
+    return False
+    
+def word_list(data: dict[list]) -> None:
     """単語一覧表示"""
     print("英単語一覧")
     
-    for i, v in enumerate(data["単語"], start=1):
-        print(f"{i} / {v['英単語']} / {v['訳']}")
+    for i, d in enumerate(data["単語"], start=1): #初期値は１からスタート
+        print(f"{i} / {d['英単語']} / {d['訳']}")
         
 def test_questions(data: dict[list]) -> str:
     """テスト問題出題（１問）"""
@@ -95,24 +109,59 @@ def test_questions(data: dict[list]) -> str:
     print("問題")
     print("=" *4)
     
-    d = data["単語"]
+    problem = random.choice(data["単語"])
+    p = problem["英単語"]
     
-    problem = random.choice(d[0]["英単語"])
-    answer = input(f"{problem}の日本語は？: ")
-    return answer_check(data, answer)
+    answer = input(f"{p}の日本語は？: ")
+    return answer_check(data, problem, answer)
 
-def answer_check(data: dict[list], answer: str):
+def answer_check(data: dict[list], problem: str, answer: str):
     """正誤判定"""
-    d = data["単語"]
+    today = datetime.now().strftime("%Y/%m/%d %H:%M")
     
-    if answer == d[0]["訳"]:
-        print("〇")
+    p = problem["英単語"]
+    
+    if answer == problem["訳"]:
+        new_answer = {
+            "問題" : p,
+            "回答" : answer,
+            "結果" : "正解",
+            "回答日時" : today
+        }
+        
+        data["テスト結果"].append(new_answer)
+        json_save(data)
+        
+        print(f"正解！ テスト結果を記録しました（記録日： {today}）")
     else:
-        print("×")
-
+        new_answer = {
+            "問題" : p,
+            "回答" : answer,
+            "結果" : "不正解",
+            "回答日時" : today
+        }
+        data["テスト結果"].append(new_answer)
+        json_save(data)
+        
+        print(f"残念！ テスト結果を記録しました（記録日： {today}）")
+        print(f"正解は: {problem["訳"]}")
+    
 def summary_results(data: dict[list]):
     """集計・結果表示"""
-
+    results = data["テスト結果"]
+    #正解・不正解別で集計するため、代入する変数を２つ追加
+    correct_true = 0
+    correct_false = 0
+    
+    for r in results:
+        if r["結果"] == "正解":
+            correct_true += 1
+        elif r["結果"] == "不正解":
+            correct_false += 1
+            
+    print(f"正解数: {correct_true}")
+    print(f"不正解数: {correct_false}")
+    
 def main() -> None:
     """メイン画面"""
     print("=" * 6)
