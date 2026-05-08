@@ -39,7 +39,7 @@ def init_csv() -> None:
         pd.DataFrame(columns=["サービス名", "料金", "初回支払日", "支払形式"]).to_csv(
             FILE_PATH_CSV, index=False, encoding="utf-8-sig"
         ) 
-    print("csvファイルを新規作成しました")
+        print("csvファイルを新規作成しました")
 
 def save_csv(data_csv: str) -> None:
     """登録時に１行追記する"""
