@@ -15,7 +15,7 @@ import csv
 #登録ボタン（６行目）
 #家計簿一覧の切り替えボタン（７行目）
 #家計簿一覧（右に収入・支出・収支の合計を表示）（８行目）
-def load_categories(file_path: str = r"C:\Users\ahsom\Desktop\プログラミング学習\Python\初心者\kakeibo\category.json"):
+def load_categories(file_path: str = r"C:\Users\ahsom\Desktop\プログラミング学習\Python\practice\app\kakeibo\category.json"):
     """json読み込み、無ければ作成（支出・収入カテゴリ）"""
     path = Path(file_path)
     if path.exists():
@@ -34,7 +34,7 @@ def load_categories(file_path: str = r"C:\Users\ahsom\Desktop\プログラミン
             json.dump(categories, f, ensure_ascii=False, indent=2)
     return categories
 
-def load_csv(data_csv: str = r"C:\Users\ahsom\Desktop\プログラミング学習\Python\初心者\kakeibo\kakeibo.csv"):
+def load_csv(data_csv: str = r"C:\Users\ahsom\Desktop\プログラミング学習\Python\practice\app\kakeibo\kakeibo.csv"):
     """csv書き込み（無ければ作成）。家計簿の書き込みはこのcsvファイルを使う"""
     path = Path(data_csv)
     if path.exists():
@@ -118,7 +118,7 @@ def build_form(root, refresh):
     memo_entry.grid(row=4, column=1)
     
     #登録（入力情報すべてを登録。金額部分が数字以外で入力されていればエラーを出す）
-    def register(data_csv: str = r"C:\Users\ahsom\Desktop\プログラミング学習\Python\初心者\kakeibo\kakeibo.csv"):
+    def register(data_csv: str = r"C:\Users\ahsom\Desktop\プログラミング学習\Python\practice\app\kakeibo\kakeibo.csv"):
         """登録（日付・種別・カテゴリ・金額・メモ）メモは空白でもOK、金額は数字のみ登録できるように設計。登録したら家計簿一覧画面を更新"""
         date = date_var.get()
         type = var.get()
@@ -147,7 +147,7 @@ def build_form(root, refresh):
     register_button = tk.Button(root, text = "登録", command= register)
     register_button.grid(row=5, column=1)
 
-def build_sumary(root, data_csv: str = r"C:\Users\ahsom\Desktop\プログラミング学習\Python\初心者\kakeibo\kakeibo.csv"):
+def build_sumary(root, data_csv: str = r"C:\Users\ahsom\Desktop\プログラミング学習\Python\practice\app\kakeibo\kakeibo.csv"):
     """支出・収入合計、家計簿一覧を表示"""
     income = 0 #収入合計
     expence = 0 #支出合計
