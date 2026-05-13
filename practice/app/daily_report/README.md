@@ -21,7 +21,8 @@
 ## ファイル構成
 daily_report
 ├── daily_report_file   #txtファイル収納
-└── daily_report.py     #メインプログラム
+├── daily_report.py     #メインプログラム
+└── README.md           #プログラムの説明(当ファイル)
 
 # 反省点
 ## 関数を分割しなかった
