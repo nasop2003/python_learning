@@ -1,6 +1,6 @@
 #簡易メモ帳
 
-FILE_NAME = "memo.txt"
+FILE_NAME = r"C:\Users\ahsom\Desktop\プログラミング学習\Python\practice\app\memo.txt"
 
 while True:
     print("\n--- 簡易メモ帳 ---")
@@ -24,7 +24,7 @@ while True:
                 print(content)
         except FileNotFoundError:
             print("まだメモがありません")
-            raise
+            continue
     
     elif choice == "3":
         print("終了します")
